@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-
+namespace App;
+use App\DatabaseConnection;
 use DateTime;
 use Exception;
 use PDOException;
