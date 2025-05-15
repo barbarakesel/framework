@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-app
+    volumes:
+      - ./www:/var/www/html
+      - ./php/config/php.ini:/usr/local/etc/php/php.ini
+      - ./data:/var/www/html/data
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2328
+      POSTGRES_DB: framework
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    volumes:
+      - ./www:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8080:80
+    depends_on:
+      - app
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
