@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require __DIR__ . '/../config/autoload.php';
+
 use App\Parse;
 use App\Filter;
 
