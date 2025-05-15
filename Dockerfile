@@ -2,8 +2,7 @@ FROM php:8-fpm-alpine
 
 WORKDIR /var/www/html
 
-COPY . /var/www/html
-
+COPY ./www /var/www/html
 RUN apk update && apk add --no-cache postgresql-client
 RUN apk add --no-cache \
     icu-dev \
