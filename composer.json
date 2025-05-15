@@ -12,7 +12,8 @@
             "email": "kesel2004@mail.ru"
         }
     ],
-    "require-dev": {
+    "require": {
+      "ext-pdo": "*",
         "fakerphp/faker": "^1.24"
     }
 }

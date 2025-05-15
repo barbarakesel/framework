@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
-use App\DatabaseConnection;
+namespace Varvara\Framework\App;
 use DateTime;
 use Exception;
 use PDOException;
@@ -76,7 +75,14 @@ class Parse
             }
 
             fclose($handle);
-            echo "Data imported successfully!";
+            echo "
+                    <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
+                    <h1> Data imported successfully! </h1>
+                    <div style='display:flex; justify-content:center; flex-direction:column; '>
+                                <a href = '/' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Main Page</button></a>
+                    </div>
+                    </div>
+                    ";
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();
         } catch (Exception $e) {

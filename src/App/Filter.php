@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace Varvara\Framework\App;
 
-use App\DatabaseConnection;
+use Exception;
 use PDO;
 use PDOException;
-use Exception;
 
 class Filter
 {
@@ -52,9 +51,14 @@ class Filter
 
             $results = $query->fetchAll(PDO::FETCH_ASSOC);
             if ($results) {
-                echo "<table style='border: 1px solid black; border-collapse: collapse; width: 100%;'>
+                echo "
+                <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; align-items: center; text-align: center; '>
+                <div style='display:flex; justify-content:center; flex-direction:column; '>
+                                <a href = '/' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Main Page</button></a>
+                </div>
+                <table style='border: 1px solid black; border-collapse: collapse; width: 100%; background: #ffffff;'>
                 <thead>
-                    <tr style='background-color: #f2f2f2;'>
+                    <tr style='background-color: lightpink;'>
                         <th style='padding: 10px; text-align: left;'>ID</th>
                         <th style='padding: 10px; text-align: left;'>Country</th>
                         <th style='padding: 10px; text-align: left;'>City</th>
@@ -67,11 +71,12 @@ class Filter
                         <th style='padding: 10px; text-align: left;'>Registration Date</th>
                     </tr>
                 </thead>
-                <tbody>";
+                <tbody>
+                </div>";
                 foreach ($results as $row) {
                     echo "<tr>";
                     foreach ($row as $column => $value) {
-                        echo "<td>$value</td>";
+                        echo "<td style='padding: 10px'>$value</td>";
                     }
                     echo "</tr>";
                 }
