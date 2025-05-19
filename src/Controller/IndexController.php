@@ -12,7 +12,6 @@ class IndexController
             <div style='display:flex; justify-content:center; flex-direction:column; '>
                         <a href='/file' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Upload File</button></a>
                         <a href = '/generate-form' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Generate Data</button></a>
-                        <a href = '/parse' style = 'padding: 20px;'><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Parse Data</button></a>
                         <a href = '/filter' style = 'padding: 20px;'><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Filter Data</button></a>
             </div>
             </div>

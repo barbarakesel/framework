@@ -30,6 +30,12 @@ class Parse
                 die("Unable to open the file: $filename");
             }
 
+            $maxFileSize = 5 * 1024 * 1024;
+
+            if ($filename > $maxFileSize) {
+                echo "This file is too big!";
+                exit;
+            }
             $rowNum = 0;
             while (($row = fgetcsv($handle, 1000, ',', '"', '\\')) !== false) {
                 $rowNum++;
@@ -91,3 +97,4 @@ class Parse
 
     }
 }
+//                        <a href = '/parse' style = 'padding: 20px;'><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Parse Data</button></a>
