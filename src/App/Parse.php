@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Varvara\Framework\App;
+
 use DateTime;
 use Exception;
 use PDOException;
@@ -16,6 +17,8 @@ class Parse
             $db = $database->getConnection();
 
             $filename = '/var/www/html/data/data.csv';
+            $filename = $_FILES['csv']['tmp_name'];
+
 
             if (!file_exists($filename)) {
                 die("File not found: $filename");
@@ -28,10 +31,10 @@ class Parse
             }
 
             $rowNum = 0;
-            while (($row = fgetcsv($handle, 1000, ',', '"', '\\')) !== FALSE) {
+            while (($row = fgetcsv($handle, 1000, ',', '"', '\\')) !== false) {
                 $rowNum++;
 
-                if ($row === false || count($row) < 9) {
+                if (!$row || count($row) < 9) {
                     echo "Skipping row $rowNum: Invalid row data\n";
                     continue;
                 }
@@ -45,20 +48,20 @@ class Parse
                 }
 
                 $data = [
-                    'country' => trim($row[0]),
-                    'city' => trim($row[1]),
-                    'is_active' =>  (int)$row[2],
-                    'gender' => trim($row[3]),
+                    'country' => trim($row[0] ?? ''),
+                    'city' => trim($row[1] ?? ''),
+                    'is_active' => (int)$row[2],
+                    'gender' => trim($row[3] ?? ''),
                     'birth_date' => $birthDate->format('Y-m-d'),
                     'salary' => is_numeric($row[5]) ? (int)$row[5] : 0,
-                    'has_children' =>  (int)$row[6],
-                    'family_status' => trim($row[7]),
+                    'has_children' => (int)$row[6],
+                    'family_status' => trim($row[7] ?? ''),
                     'registration_date' => $registrationDate->format('Y-m-d')
                 ];
 
                 $stmt = $db->prepare('INSERT INTO users (country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
 
-                if ($stmt->execute([
+                $stmt->execute([
                     $data['country'],
                     $data['city'],
                     $data['is_active'],
@@ -68,10 +71,7 @@ class Parse
                     $data['has_children'],
                     $data['family_status'],
                     $data['registration_date']
-                ])) {
-                } else {
-                    echo "Failed to insert row $rowNum\n";
-                }
+                ]);
             }
 
             fclose($handle);

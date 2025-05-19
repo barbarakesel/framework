@@ -1,0 +1,12 @@
+repos:
+  - repo: local
+    hooks:
+      - id: php-cs-fixer
+        name: PHP CS Fixer
+        entry: composer fix -- --config=.php-cs-fixer.php
+        language: system
+
+      - id: phpstan
+        name: PHPStan
+        entry: composer analyze
+        language: system

@@ -12,7 +12,6 @@ class Filter
 {
     public function filter(): void
     {
-
         try {
             $database = new DatabaseConnection();
             $db = $database->getConnection();
