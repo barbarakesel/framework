@@ -9,13 +9,14 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use Faker\Factory;
 use Exception;
 use PDOException;
+use Varvara\Framework\Database\Database;
 
 class Generate
 {
     public function generate(int $quantity): void
     {
         try {
-            $database = new DatabaseConnection();
+            $database = new Database();
             $db = $database->getConnection();
 
             $faker = Factory::create();
@@ -32,18 +33,9 @@ class Generate
                     'family_status' => $faker->randomElement($array = ['married', 'single']),
                     'registration_date' => $faker->date
                 ];
-                $stmt = $db->prepare('INSERT INTO users (country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-                $stmt->execute([
-                    $data['country'],
-                    $data['city'],
-                    $data['is_active'],
-                    $data['gender'],
-                    $data['birth_date'],
-                    $data['salary'],
-                    $data['has_children'],
-                    $data['family_status'],
-                    $data['registration_date']
-                ]);
+                $query = 'INSERT INTO users (country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) 
+                          VALUES (:country, :city, :is_active, :gender, :birth_date, :salary, :has_children, :family_status, :registration_date)';
+                $database->execute($query, $data);
             }
 
             echo "

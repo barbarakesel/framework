@@ -7,13 +7,14 @@ namespace Varvara\Framework\App;
 use DateTime;
 use Exception;
 use PDOException;
+use Varvara\Framework\Database\Database;
 
 class Parse
 {
     public function parse(): void
     {
         try {
-            $database = new DatabaseConnection();
+            $database = new Database();
             $db = $database->getConnection();
 
             $filename = '/var/www/html/data/data.csv';
@@ -65,19 +66,9 @@ class Parse
                     'registration_date' => $registrationDate->format('Y-m-d')
                 ];
 
-                $stmt = $db->prepare('INSERT INTO users (country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-
-                $stmt->execute([
-                    $data['country'],
-                    $data['city'],
-                    $data['is_active'],
-                    $data['gender'],
-                    $data['birth_date'],
-                    $data['salary'],
-                    $data['has_children'],
-                    $data['family_status'],
-                    $data['registration_date']
-                ]);
+                $query = "INSERT INTO users (country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) 
+                          VALUES (:country, :city, :is_active, :gender, :birth_date, :salary, :has_children, :family_status, :registration_date)";
+                $database->execute($query, $data);
             }
 
             fclose($handle);

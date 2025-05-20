@@ -5,50 +5,47 @@ declare(strict_types=1);
 namespace Varvara\Framework\App;
 
 use Exception;
-use PDO;
 use PDOException;
+use Varvara\Framework\Database\Database;
 
 class Filter
 {
     public function filter(): void
     {
         try {
-            $database = new DatabaseConnection();
-            $db = $database->getConnection();
+            $database = new Database();
 
-            $stmt = "SELECT * FROM users WHERE 1=1";
+            $query = "SELECT * FROM users WHERE 1=1";
             $params = [];
 
             if (isset($_GET['country'])) {
-                $stmt .= " AND country = :country";
+                $query .= " AND country = :country";
                 $params[':country'] = $_GET['country'];
             }
 
             if (isset($_GET['city'])) {
-                $stmt .= " AND city = :city";
+                $query .= " AND city = :city";
                 $params[':city'] = $_GET['city'];
             }
 
             if (isset($_GET['is_active'])) {
-                $stmt .= " AND is_active = :is_active";
+                $query .= " AND is_active = :is_active";
                 $params[':is_active'] = $_GET['is_active'];
             }
 
             if (isset($_GET['gender'])) {
-                $stmt .= " AND gender = :gender";
+                $query .= " AND gender = :gender";
                 $params[':gender'] = $_GET['gender'];
             }
 
             if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
-                $stmt .= " AND birth_date BETWEEN :start_date AND :end_date";
+                $query .= " AND birth_date BETWEEN :start_date AND :end_date";
                 $params[':start_date'] = $_GET['start_date'];
                 $params[':end_date'] = $_GET['end_date'];
             }
 
-            $query = $db->prepare($stmt);
-            $query->execute($params);
 
-            $results = $query->fetchAll(PDO::FETCH_ASSOC);
+            $results = $database->fetchAll($query, $params);
             if ($results) {
                 echo "
                 <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; align-items: center; text-align: center; '>
