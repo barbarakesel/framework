@@ -44,39 +44,12 @@ class Filter
                 $params[':end_date'] = $_GET['end_date'];
             }
 
+            $loader = new \Twig\Loader\FilesystemLoader('templates');
+            $twig = new \Twig\Environment($loader);
 
             $results = $database->fetchAll($query, $params);
             if ($results) {
-                echo "
-                <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; align-items: center; text-align: center; '>
-                <div style='display:flex; justify-content:center; flex-direction:column; '>
-                                <a href = '/' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Main Page</button></a>
-                </div>
-                <table style='border: 1px solid black; border-collapse: collapse; width: 100%; background: #ffffff;'>
-                <thead>
-                    <tr style='background-color: lightpink;'>
-                        <th style='padding: 10px; text-align: left;'>ID</th>
-                        <th style='padding: 10px; text-align: left;'>Country</th>
-                        <th style='padding: 10px; text-align: left;'>City</th>
-                        <th style='padding: 10px; text-align: left;'>Is Active</th>
-                        <th style='padding: 10px; text-align: left;'>Gender</th>
-                        <th style='padding: 10px; text-align: left;'>Birth Date</th>
-                        <th style='padding: 10px; text-align: left;'>Salary</th>
-                        <th style='padding: 10px; text-align: left;'>Has Children</th>
-                        <th style='padding: 10px; text-align: left;'>Family Status</th>
-                        <th style='padding: 10px; text-align: left;'>Registration Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </div>";
-                foreach ($results as $row) {
-                    echo "<tr>";
-                    foreach ($row as $column => $value) {
-                        echo "<td style='padding: 10px'>$value</td>";
-                    }
-                    echo "</tr>";
-                }
-                echo "</table>";
+                echo $twig->render('filter.html.twig', ['results' => $results]);
             } else {
                 echo "No results found.";
             }

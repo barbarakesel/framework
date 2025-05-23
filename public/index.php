@@ -12,8 +12,6 @@ use Varvara\Framework\Routing\RouteCollection;
 use Varvara\Framework\Routing\RouteMatcher;
 use Varvara\Framework\Routing\Route;
 
-//use Dotenv\Dotenv;
-
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
@@ -27,20 +25,31 @@ $collection->add(new Route('/generate-form', 'GET', \Varvara\Framework\Controlle
 $collection->add(new Route('/generate', 'POST', Generate::class, 'generate'));
 $collection->add(new Route('/file', 'POST', File::class, 'file'));
 $collection->add(new Route('/upload', 'GET', Parse::class, 'parse'));
+$collection->add(new Route('/count/{field}', 'GET', \Varvara\Framework\Controller\StatController::class, 'countByField'));
+$collection->add(new Route('/stat', 'GET', \Varvara\Framework\Controller\StatController::class, 'showStatPage'));
 
 
 
 $routeMatcher = new RouteMatcher($collection);
 try {
-    $route = $routeMatcher->match($_SERVER['REQUEST_URI']);
+    $route = $routeMatcher->match(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+
+    $classname = $route->getClass();
+    $method = $route->getClassMethod();
+
+    $controller = new $classname();
+
+    $params = $route->params;
+
+    if (!empty($params)) {
+        $controller->$method(...array_values($params));
+    } else {
+        $quantity = $_POST['quantity'] ?? 0;
+        $controller->$method((int)$quantity);
+    }
+
 } catch (Exception $e) {
-    echo "error";
+    http_response_code(404);
+    echo "404 Not Found: " . $e->getMessage();
+    exit;
 }
-
-$classname = $route->getClass();
-$method = $route->getClassMethod();
-
-$controller = new $classname();
-$quantity = $_POST['quantity'] ?? 0;
-
-$controller->$method((int)$quantity);

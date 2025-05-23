@@ -6,16 +6,9 @@ class IndexController
 {
     public function index(): void
     {
-        echo "
-            <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
-            <h1> Welcome to main page </h1>
-            <div style='display:flex; justify-content:center; flex-direction:column; '>
-                        <a href='/file' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Upload File</button></a>
-                        <a href = '/generate-form' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Generate Data</button></a>
-                        <a href = '/filter' style = 'padding: 20px;'><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Filter Data</button></a>
-            </div>
-            </div>
-            ";
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader);
+        echo $twig->render('index.html.twig');
     }
 
     public function showGenerateForm(): void

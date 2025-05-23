@@ -5,21 +5,20 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 return (new Config())
-    ->setRiskyAllowed(true) // Разрешить использование "рискованных" правил
-    ->setIndent("    ") // Использовать 4 пробела для отступов
-    ->setLineEnding("\n") // Переводы строк в стиле Unix
+    ->setRiskyAllowed(true)
+    ->setIndent("    ")
+    ->setLineEnding("\n")
     ->setRules([
-        '@PSR12' => true, // Поддержка стандарта PSR-12
-        'strict_param' => true, // Строгая проверка типов параметров
-        'array_syntax' => ['syntax' => 'short'], // Использовать короткий синтаксис массива
-        'no_unused_imports' => true, // Убирать неиспользуемые импорты
-        'no_trailing_whitespace' => true, // Убирать лишние пробелы
-        'single_blank_line_at_eof' => true, // Оставлять одну пустую строку в конце файла
+        '@PSR12' => true,
+        'strict_param' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'no_unused_imports' => true,
+        'no_trailing_whitespace' => true,
+        'single_blank_line_at_eof' => true,
     ])
     ->setFinder(
         Finder::create()
-            ->in(__DIR__ . '/src') // Директория с исходным кодом
-            ->name('*.php') // Ищем только файлы PHP
-            ->notName('*.blade.php') // Игнорируем шаблоны Laravel (если используешь)
-            ->exclude(['vendor', 'node_modules', 'storage']) // Игнорируем сторонние директории
+            ->in(__DIR__ . '/src')
+            ->name('*.php')
+            ->exclude(['vendor', 'node_modules', 'storage'])
     );

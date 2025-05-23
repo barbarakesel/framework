@@ -31,5 +31,13 @@ class Route
     {
         return $this->classMethod;
     }
+    public array $params = [] {
+        get {
+            return $this->params;
+        }
+        set {
+            $this->params = $value;
+        }
+    }
 
 }

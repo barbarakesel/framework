@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div style="background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; align-items: center; text-align: center;">
+<div style="display:flex; justify-content:center; flex-direction:column;">
+    <a href="/" style="padding: 20px;">
+        <button style="width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white">Main Page</button>
+    </a>
+</div>
+<h1>Audience statistics</h1>
+<div style="padding-bottom: 16px">
+<label for="fieldSelect"></label>
+<select id="fieldSelect">
+    <option value="gender">Gender</option>
+    <option value="country">Country</option>
+    <option value="is_active">IsActive</option>
+    <option value="has_children">HasChildren</option>
+    <option value="family_status">familyStatus</option>
+</select>
+</div>
+<canvas id="stat" width="600" height="250" style="background: white"></canvas>
+</div>
+<script>
+    function fetchDataAndRender(field) {
+
+        fetch(`/count/${field}`)
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.label);
+                const counts = data.map(item => item.count);
+
+                new Chart(document.getElementById('stat'), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: `Count by ${field}`,
+                            data: counts,
+                            backgroundColor: 'rgba(152, 251, 152, 0.6)'
+                        }]
+                    }
+                });
+            });
+    }
+
+    document.getElementById('fieldSelect').addEventListener('change', function () {
+        fetchDataAndRender(this.value);
+    });
+    window.onload = function () {
+        fetchDataAndRender(document.getElementById('fieldSelect').value);
+    };
+</script>
+</body>
+</html>
