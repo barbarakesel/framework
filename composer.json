@@ -20,7 +20,8 @@
     "require": {
         "ext-pdo": "*",
         "vlucas/phpdotenv": "^5.6",
-        "twig/twig": "^3.21"
+        "twig/twig": "^3.21",
+        "robmorgan/phinx": "^0.16.9"
     },
     "scripts": {
         "fix": "php-cs-fixer fix src",

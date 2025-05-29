@@ -40,4 +40,10 @@ class Route
         }
     }
 
+    public function setParams(array $params): Route
+    {
+        $this->params = $params;
+        return $this;
+    }
+
 }

@@ -25,6 +25,8 @@ services:
       - ./sql:/docker-entrypoint-initdb.d
     networks:
       - backend
+    ports:
+      - "5433:5432"
 
   nginx:
     image: nginx:latest
