@@ -10,6 +10,7 @@ class File
 <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
             <form action='/upload' method='post' enctype='multipart/form-data'>
             <input type='file' name='csv' value='' />
+            <input name='organization_id' value='' />
             <input type='submit' name='submit' value='Save' /></form>
             </div>
         ";

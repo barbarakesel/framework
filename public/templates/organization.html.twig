@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+<div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
+    <div style='display:flex; justify-content:center; flex-direction:column; '>
+        <a href = '/' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Main Page</button></a>
+    </div>
+    <h1>Organizations</h1>
+    <div style='display:flex; justify-content:center; flex-direction:column; '>
+        <table style="border: 1px solid black; border-collapse: collapse; width: 100%; background: #ffffff;">
+            <thead>
+            <tr style="background-color: lightpink;">
+                <th style="padding: 10px;">ID</th>
+                <th style="padding: 10px;">Organization</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in results %}
+                <tr>
+                    {% for value in row %}
+                        <td style="padding: 10px; color: black;">{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style='display:flex; justify-content:center; flex-direction:column; '>
+        <a href = '/organization/create-form' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Create organization</button></a>
+        <a href = '/organization/delete-form' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Delete organization</button></a>
+        <a href = '/organization/change-form' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Change organization</button></a>
+    </div>
+</div>
+</body>
+</html>

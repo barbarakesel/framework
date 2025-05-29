@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
+        <form method='POST' action='/organization/delete' onsubmit="return confirmDelete()">
+            <input name='id' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>
+            <button type='submit' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Delete</button>
+        </form>
+    </div>
+</body>
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure?");
+    }
+</script>
+</html>

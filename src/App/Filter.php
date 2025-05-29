@@ -37,10 +37,6 @@ class Filter
                 $query .= " AND gender = :gender";
                 $params[':gender'] = $_GET['gender'];
             }
-            /*if (isset($_GET['organization_id'])) {
-                $query .= " AND organization_id = :organization_id";
-                $params[':organization_id'] = $_GET['organization_id'];
-            }*/
 
             if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
                 $query .= " AND birth_date BETWEEN :start_date AND :end_date";
@@ -55,7 +51,7 @@ class Filter
             if ($results) {
                 echo $twig->render('filter.html.twig', ['results' => $results]);
             } else {
-                echo "No results found.";
+                echo $twig->render('noResults.html.twig');
             }
 
         } catch (PDOException $e) {

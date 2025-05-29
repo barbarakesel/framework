@@ -21,19 +21,33 @@
     <option value="has_children">HasChildren</option>
     <option value="family_status">familyStatus</option>
 </select>
+    <label for="fieldSelect"></label>
+    <select id="organizationSelect">
+        {% for item in names %}
+        <option value="{{ item.id }}">{{ item.name }}</option>
+        {% endfor %}
+    </select>
 </div>
 <canvas id="stat" width="600" height="250" style="background: white"></canvas>
 </div>
 <script>
-    function fetchDataAndRender(field) {
+    let chartInstance = null;
 
-        fetch(`/count/${field}`)
+    function fetchDataAndRender(field, organizationId) {
+        const url = `/count/${organizationId}/${field}`;
+        console.log('Fetching:', url);
+
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                 const labels = data.map(item => item.label);
                 const counts = data.map(item => item.count);
 
-                new Chart(document.getElementById('stat'), {
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                chartInstance = new Chart(document.getElementById('stat'), {
                     type: 'bar',
                     data: {
                         labels: labels,
@@ -47,12 +61,17 @@
             });
     }
 
-    document.getElementById('fieldSelect').addEventListener('change', function () {
-        fetchDataAndRender(this.value);
-    });
-    window.onload = function () {
-        fetchDataAndRender(document.getElementById('fieldSelect').value);
-    };
+    function updateChart() {
+        const field = document.getElementById('fieldSelect').value;
+        const organizationId = document.getElementById('organizationSelect').value;
+        fetchDataAndRender(field, organizationId);
+    }
+
+    document.getElementById('fieldSelect').addEventListener('change', updateChart);
+    document.getElementById('organizationSelect').addEventListener('change', updateChart);
+
+    window.onload = updateChart;
 </script>
+
 </body>
 </html>

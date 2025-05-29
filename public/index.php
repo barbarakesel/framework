@@ -25,10 +25,18 @@ $collection->add(new Route('/generate-form', 'GET', \Varvara\Framework\Controlle
 $collection->add(new Route('/generate', 'POST', Generate::class, 'generate'));
 $collection->add(new Route('/file', 'POST', File::class, 'file'));
 $collection->add(new Route('/upload', 'GET', Parse::class, 'parse'));
-$collection->add(new Route('/count/{field}', 'GET', \Varvara\Framework\Controller\StatController::class, 'countByField'));
+//$collection->add(new Route('/count/{field}', 'GET', \Varvara\Framework\Controller\StatController::class, 'countByField'));
 $collection->add(new Route('/stat', 'GET', \Varvara\Framework\Controller\StatController::class, 'showStatPage'));
+$collection->add(new Route('/count/{organizationId}/{field}','GET',\Varvara\Framework\Controller\StatController::class,'countByField'));
 
-
+$collection->add(new Route('/organization', 'GET', \Varvara\Framework\Controller\OrganizationController::class, 'show'));
+$collection->add(new Route('/organization/create-form', 'GET', \Varvara\Framework\Controller\OrganizationController::class, 'showCreateForm'));
+$collection->add(new Route('/organization/create', 'POST', \Varvara\Framework\Controller\OrganizationController::class, 'create'));
+$collection->add(new Route('/organization/delete-form', 'GET', \Varvara\Framework\Controller\OrganizationController::class, 'showDeleteForm'));
+$collection->add(new Route('/organization/delete', 'POST', \Varvara\Framework\Controller\OrganizationController::class, 'delete'));
+$collection->add(new Route('/organization/change-form', 'GET', \Varvara\Framework\Controller\OrganizationController::class, 'showChangeForm'));
+$collection->add(new Route('/organization/change', 'POST', \Varvara\Framework\Controller\OrganizationController::class, 'change'));
+$collection->add(new Route('/organization/change/company', 'POST', \Varvara\Framework\Controller\OrganizationController::class, 'changeCompany'));
 
 $routeMatcher = new RouteMatcher($collection);
 try {
@@ -41,12 +49,12 @@ try {
 
     $params = $route->params;
 
-    if (!empty($params)) {
+   if (!empty($params)) {
         $controller->$method(...array_values($params));
     } else {
         $quantity = $_POST['quantity'] ?? 0;
         $controller->$method((int)$quantity);
-    }
+   }
 
 } catch (Exception $e) {
     http_response_code(404);

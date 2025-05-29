@@ -65,9 +65,19 @@ class Parse
                     'family_status' => trim($row[7] ?? ''),
                     'registration_date' => $registrationDate->format('Y-m-d')
                 ];
+                
+                $organizationId = isset($_POST['organization_id']) ? (int)$_POST['organization_id'] : null;
 
-                $query = "INSERT INTO users (country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) 
-                          VALUES (:country, :city, :is_active, :gender, :birth_date, :salary, :has_children, :family_status, :registration_date)";
+                if (!$organizationId) {
+                    echo "Organization ID is missing!";
+                    exit;
+                }
+
+                $data['organization_id'] = $organizationId;
+
+                $query = "INSERT INTO users (organization_id, country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) 
+          VALUES (:organization_id, :country, :city, :is_active, :gender, :birth_date, :salary, :has_children, :family_status, :registration_date)";
+
                 $database->execute($query, $data);
             }
 

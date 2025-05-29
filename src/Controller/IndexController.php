@@ -15,7 +15,7 @@ class IndexController
     {
         echo "<div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
           <form method='POST' action='/generate'>
-                <input type='number' name='quantity' min='1' max='100' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>
+                <input type='number' name='quantity' min='1' max='100' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white' value='quantityForm'>
                 <button type='submit' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Generate</button>
           </form>
           </div>";
