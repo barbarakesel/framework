@@ -2,13 +2,33 @@
 
 namespace Varvara\Framework\Controller;
 
+use PDO;
+use Varvara\Framework\Database\Database;
+
 class IndexController
 {
     public function index(): void
     {
+        $userId = null;
+
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+
+        $query = 'SELECT id, name FROM organization WHERE owner = :userId';
+        $params = [':userId' => $userId];
+        $stmt = $db->prepare($query);
+        $stmt->execute($params);
+        $names = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader);
-        echo $twig->render('index.html.twig');
+
+        echo $twig->render('index.html.twig', ['names' => $names, 'user_id' => $userId]);
     }
 
     public function showGenerateForm(): void

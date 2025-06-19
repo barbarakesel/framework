@@ -56,3 +56,5 @@ try {
     echo "Ошибка: " . $e->getMessage() . "\n";
     exit(1);
 }
+
+//docker exec -it php-app php migration.php

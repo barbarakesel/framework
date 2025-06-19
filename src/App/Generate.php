@@ -21,8 +21,11 @@ class Generate
 
             $faker = Factory::create();
 
+            $organizationId = $_POST['organization_id'] ?? null;
+
             for ($i = 0; $i < $quantity; $i++) {
                 $data = [
+                    'organization_id' => $organizationId,
                     'country' => $faker->country,
                     'city' => $faker->city,
                     'is_active' => $faker->numberBetween(0, 1),
@@ -33,19 +36,19 @@ class Generate
                     'family_status' => $faker->randomElement($array = ['married', 'single']),
                     'registration_date' => $faker->date
                 ];
-                $query = 'INSERT INTO users (country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) 
-                          VALUES (:country, :city, :is_active, :gender, :birth_date, :salary, :has_children, :family_status, :registration_date)';
+                $query = 'INSERT INTO users (
+                            organization_id, country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date
+                        ) VALUES (
+                            :organization_id, :country, :city, :is_active, :gender, :birth_date, :salary, :has_children, :family_status, :registration_date
+                        )';
+
                 $database->execute($query, $data);
             }
+            $loader = new \Twig\Loader\FilesystemLoader('templates');
+            $twig = new \Twig\Environment($loader);
+            $value = 'Data generated successfully!';
+            echo $twig->render('success.html.twig', ['value' => $value]);
 
-            echo "
-                    <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
-                    <h1> Data generated successfully! </h1>
-                    <div style='display:flex; justify-content:center; flex-direction:column; '>
-                                <a href = '/' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Main Page</button></a>
-                    </div>
-                    </div>
-                    ";
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();
         } catch (Exception $e) {

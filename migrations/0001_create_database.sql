@@ -1,4 +1,4 @@
-CREATE IF NOT EXISTS TABLE users (
+CREATE TABLE IF NOT EXISTS    users (
                               id SERIAL PRIMARY KEY,
                               country VARCHAR(255),
                               city VARCHAR(255),

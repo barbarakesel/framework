@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Varvara\Framework\App;
+namespace Varvara\Framework\Controller;
 
 use DateTime;
 use Exception;
 use PDOException;
 use Varvara\Framework\Database\Database;
 
-class Parse
+class ParseController
 {
     public function parse(): void
     {
@@ -65,7 +65,7 @@ class Parse
                     'family_status' => trim($row[7] ?? ''),
                     'registration_date' => $registrationDate->format('Y-m-d')
                 ];
-                
+
                 $organizationId = isset($_POST['organization_id']) ? (int)$_POST['organization_id'] : null;
 
                 if (!$organizationId) {
@@ -76,20 +76,17 @@ class Parse
                 $data['organization_id'] = $organizationId;
 
                 $query = "INSERT INTO users (organization_id, country, city, is_active, gender, birth_date, salary, has_children, family_status, registration_date) 
-          VALUES (:organization_id, :country, :city, :is_active, :gender, :birth_date, :salary, :has_children, :family_status, :registration_date)";
+                VALUES (:organization_id, :country, :city, :is_active, :gender, :birth_date, :salary, :has_children, :family_status, :registration_date)";
 
                 $database->execute($query, $data);
             }
 
             fclose($handle);
-            echo "
-                    <div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
-                    <h1> Data imported successfully! </h1>
-                    <div style='display:flex; justify-content:center; flex-direction:column; '>
-                                <a href = '/' style = 'padding: 20px; '><button style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Main Page</button></a>
-                    </div>
-                    </div>
-                    ";
+            $loader = new \Twig\Loader\FilesystemLoader('templates');
+            $twig = new \Twig\Environment($loader);
+            $value = 'Data imported successfully!';
+            echo $twig->render('success.html.twig', ['value' => $value]);
+
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();
         } catch (Exception $e) {

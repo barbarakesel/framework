@@ -51,7 +51,8 @@ class Filter
             if ($results) {
                 echo $twig->render('filter.html.twig', ['results' => $results]);
             } else {
-                echo $twig->render('noResults.html.twig');
+                $value = 'There are no results!';
+                echo $twig->render('success.html.twig', ['value' => $value]);
             }
 
         } catch (PDOException $e) {

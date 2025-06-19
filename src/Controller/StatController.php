@@ -13,7 +13,7 @@ class StatController
 
         $allowedFields = ['gender', 'country', 'is_active', 'has_children', 'family_status'];
 
-        if (!in_array($field, $allowedFields)) {
+        if (!in_array($field, $allowedFields, true)) {
             http_response_code(400);
             echo json_encode(['error' => 'Invalid field']);
             exit;
@@ -34,12 +34,15 @@ class StatController
 
     public function showStatPage(): void
     {
+        $userId = $_SESSION['user_id'];
+
         $database = new Database();
         $db = $database->getConnection();
 
-        $query = 'SELECT id, name FROM organization';
+        $query = 'SELECT id, name FROM organization WHERE owner = :userId';
+        $params = [':userId' => $userId];
         $stmt = $db->prepare($query);
-        $stmt->execute();
+        $stmt->execute($params);
         $names = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 

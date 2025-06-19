@@ -3,50 +3,56 @@
 namespace Varvara\Framework\Controller;
 
 use Exception;
-use Faker\Factory;
 use PDO;
 use PDOException;
 use Varvara\Framework\Database\Database;
 
 class OrganizationController
 {
-    public function show() :void
+    public function show(): void
     {
+        if (!isset($_SESSION['user_id'])) {
+            echo "Please Login";
+        }
+
+        $userId = $_SESSION['user_id'];
+
         try {
-        $database = new Database();
+            $database = new Database();
 
-        $query = "SELECT * FROM organization WHERE 1=1";
-        $params = [];
+            $query = "SELECT * FROM organization WHERE owner = :userId";
+            $params = [':userId' => $userId];
 
-        if (isset($_GET['id'])) {
-            $query .= " AND id = :id";
-            $params[':id'] = $_GET['id'];
-        }
+            if (isset($_GET['id'])) {
+                $query .= " AND id = :id";
+                $params[':id'] = $_GET['id'];
+            }
 
-        if (isset($_GET['name'])) {
-            $query .= " AND name = :name";
-            $params[':name'] = $_GET['name'];
-        }
+            if (isset($_GET['name'])) {
+                $query .= " AND name = :name";
+                $params[':name'] = $_GET['name'];
+            }
 
-        $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader);
+            $loader = new \Twig\Loader\FilesystemLoader('templates');
+            $twig = new \Twig\Environment($loader);
 
-        $results = $database->fetchAll($query, $params);
-        if ($results) {
-            echo $twig->render('organization.html.twig', ['results' => $results]);
-        } else {
-            echo $twig->render('noResults.html.twig');
-        }
+            $results = $database->fetchAll($query, $params);
+            if ($results) {
+                echo $twig->render('organization.html.twig', ['results' => $results]);
+            } else {
+                echo $twig->render('organization.html.twig');
+                //echo $twig->render('noResults.html.twig');
+            }
 
         } catch (PDOException $e) {
-        echo "Database error: " . $e->getMessage();
+            echo "Database error: " . $e->getMessage();
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
 
     }
 
-    public function showCreateForm() :void
+    public function showCreateForm(): void
     {
         echo "<div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
           <form method='POST' action='/organization/create'>
@@ -55,31 +61,35 @@ class OrganizationController
           </form>
           </div>";
     }
-    public function showDeleteForm() :void
+    public function showDeleteForm(): void
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader);
         echo $twig->render('deleteForm.html.twig');
     }
 
-    public function showChangeForm() :void
+    public function showChangeForm(): void
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader);
         echo $twig->render('changeFormId.html.twig');
     }
-    public function create() :void
+    public function create(): void
     {
+
+        if (!isset($_SESSION['user_id'])) {
+            echo "Please Login";
+            return;
+        }
         try {
             $database = new Database();
             $db = $database->getConnection();
 
             $name = $_POST['name'] ?? null;
 
-            $query = 'INSERT INTO organization (name) 
-                          VALUES (:name)';
+            $query = 'INSERT INTO organization (name, owner) VALUES (:name, :owner)';
             $stmt = $db->prepare($query);
-            $stmt->execute(['name' => $name]);
+            $stmt->execute(['name' => $name, 'owner' => $_SESSION['user_id']]);
 
             $loader = new \Twig\Loader\FilesystemLoader('templates');
             $twig = new \Twig\Environment($loader);
@@ -98,7 +108,7 @@ class OrganizationController
         }
     }
 
-    public function delete() :void
+    public function delete(): void
     {
         try {
             $database = new Database();
@@ -128,7 +138,7 @@ class OrganizationController
         }
     }
 
-    public function change() :void
+    public function change(): void
     {
         try {
             $database = new Database();
@@ -153,7 +163,7 @@ class OrganizationController
         }
     }
 
-    public function changeCompany() :void
+    public function changeCompany(): void
     {
         try {
             $database = new Database();
