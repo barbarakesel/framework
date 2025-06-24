@@ -9,16 +9,16 @@
 <div class="container">
     <div style='display:flex; justify-content:center; flex-direction:column; '>
         <a href="/" style="padding: 20px;">
-            To Main Page
+            {% if lang == 'en' %} To Main Page {% elseif lang == 'ru' %} На главную {% endif %}
         </a>
     </div>
-    <h1>Organizations</h1>
+    <h1>{% if lang == 'en' %} Organizations {% elseif lang == 'ru' %} Организации {% endif %}</h1>
     <div style='display:flex; justify-content:center; flex-direction:column; '>
         <table style="border: 1px solid black; border-collapse: collapse; width: 100%; background: #ffffff;">
             <thead>
             <tr style="background-color: blue; color: white">
-                <th style="padding: 10px;">ID</th>
-                <th style="padding: 10px;">Organization</th>
+                <th style="padding: 10px;">{% if lang == 'en' %} ID {% elseif lang == 'ru' %} Идентификатор {% endif %}</th>
+                <th style="padding: 10px;">{% if lang == 'en' %} Organization {% elseif lang == 'ru' %} Организация {% endif %}</th>
             </tr>
             </thead>
             <tbody>
@@ -34,20 +34,20 @@
     <div class="row align-items-md-stretch py-5">
         <div class="col-md-4">
             <div class="h-100 p-5 text-bg-dark border rounded-3">
-                <h2>Create Organization</h2>
-                <a><button class="btn btn-outline-primary" style="font-size: 20px; width: 150px; border-radius: 8px" type="button" data-bs-toggle="modal" data-bs-target="#create">Create</button></a>
+                <h2>{% if lang == 'en' %} Create Organization {% elseif lang == 'ru' %} Создать организацию {% endif %}</h2>
+                <a><button class="btn btn-outline-primary" style="font-size: 20px; width: 150px; border-radius: 8px" type="button" data-bs-toggle="modal" data-bs-target="#create">{% if lang == 'en' %} Create {% elseif lang == 'ru' %} Создать {% endif %}</button></a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                <h2>Delete organization</h2>
-                <a><button class="btn btn-outline-primary" style="font-size: 20px; width: 150px; border-radius: 8px" type="button" data-bs-toggle="modal" data-bs-target="#delete">Delete</button></a>
+                <h2>{% if lang == 'en' %} Delete organization {% elseif lang == 'ru' %} Удалить организацию {% endif %}</h2>
+                <a><button class="btn btn-outline-primary" style="font-size: 20px; width: 150px; border-radius: 8px" type="button" data-bs-toggle="modal" data-bs-target="#delete">{% if lang == 'en' %} Delete {% elseif lang == 'ru' %} Удалить {% endif %}</button></a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                <h2>Change organization</h2>
-                <a><button class="btn btn-outline-primary" style="font-size: 20px; width: 150px; border-radius: 8px" type="button" data-bs-toggle="modal" data-bs-target="#change">Change</button></a>
+                <h2>{% if lang == 'en' %} Change organization {% elseif lang == 'ru' %} Изменить организацию {% endif %}</h2>
+                <a><button class="btn btn-outline-primary" style="font-size: 20px; width: 150px; border-radius: 8px" type="button" data-bs-toggle="modal" data-bs-target="#change">{% if lang == 'en' %} Change {% elseif lang == 'ru' %} Изменить {% endif %}</button></a>
             </div>
         </div>
     </div>
@@ -57,15 +57,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Create Organization</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{% if lang == 'en' %} Create Organization {% elseif lang == 'ru' %} Создать организацию {% endif %}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="text-center" style="font-size: 20px">Enter Organization Name</div>
+                    <div class="text-center" style="font-size: 20px">{% if lang == 'en' %} Enter Organization Name {% elseif lang == 'ru' %} Введите имя организации {% endif %}</div>
                     <form method='POST' action='/organization/create'>
                         <div class="d-flex  flex-column">
                             <div class="text-center py-3"><input name='name' style = 'width: 250px; font-size: 20px; border-radius: 12px; background: white'></div>
-                            <div class="text-center"><button type='submit' class="btn btn-primary" style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px;'>Create</button></div>
+                            <div class="text-center"><button type='submit' class="btn btn-primary" style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px;'>{% if lang == 'en' %} Create {% elseif lang == 'ru' %} Создать {% endif %}</button></div>
                         </div>
                     </form>
                 </div>
@@ -78,17 +78,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete Organization</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{% if lang == 'en' %} Delete organization {% elseif lang == 'ru' %} Удалить организацию {% endif %}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="text-center" style="font-size: 20px">Enter Organization ID</div>
+                    <div class="text-center" style="font-size: 20px">{% if lang == 'en' %} Enter Organization ID {% elseif lang == 'ru' %} Введите ID организации {% endif %}</div>
                     <form method='POST' action='/organization/delete' onsubmit="return confirmDelete()">
                         <div class="text-center py-3">
                             <input name='id' style = 'width: 250px; font-size: 20px; border-radius: 12px; background: white'>
                         </div>
                         <div class="text-center">
-                            <button type='submit' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px;' class="btn btn-primary">Delete</button>
+                            <button type='submit' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px;' class="btn btn-primary">{% if lang == 'en' %} Delete {% elseif lang == 'ru' %} Удалить {% endif %}</button>
                         </div>
                     </form>
                 </div>
@@ -101,17 +101,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Change Organization</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{% if lang == 'en' %} Change Organization {% elseif lang == 'ru' %} Изменить организацию {% endif %}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="text-center" style="font-size: 20px">Enter Organization ID</div>
+                    <div class="text-center" style="font-size: 20px">{% if lang == 'en' %} Enter Organization ID {% elseif lang == 'ru' %} Введите ID организации {% endif %}</div>
                     <form method='POST' action='/organization/change'>
                         <div class="d-flex  flex-column">
                             <div class="text-center py-3">
                                 <input name='id' style = 'width: 250px; font-size: 20px; border-radius: 12px; background: white'>
                             </div>
-                            <div class="text-center"><button type='submit' class="btn btn-primary" style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px;'>Change</button></div>
+                            <div class="text-center"><button type='submit' class="btn btn-primary" style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px;'>{% if lang == 'en' %} Change {% elseif lang == 'ru' %} Изменить {% endif %}</button></div>
                         </div>
                     </form>
                 </div>
@@ -119,8 +119,52 @@
         </div>
     </div>
 
+
+    <!-- Модальное окно успешной create -->
+    <div id="createModal" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:white; padding:20px; border:1px solid #ccc; z-index:1000;">
+        <div class="modal-dialog">
+            <div class="modal-content" style = "border: 0;">
+                <div class="lead text-body-secondary text-center">{% if lang == 'en' %} Organization created successfully! {% elseif lang == 'ru' %} Компания успешно создана! {% endif %}</div>
+                <button class="btn btn-primary mt-3" style = 'width: 100%; height: 50px; font-size: 20px; border-radius: 12px;' onclick="document.getElementById('createModal').style.display='none'">ОК</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно успешной create -->
+    <div id="deleteModal" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:white; padding:20px; border:1px solid #ccc; z-index:1000;">
+        <div class="modal-dialog">
+            <div class="modal-content" style = "border: 0;">
+                <div class="lead text-body-secondary text-center">{% if lang == 'en' %} Organization deleted successfully! {% elseif lang == 'ru' %} Компания успешно удалена! {% endif %}</div>
+                <button class="btn btn-primary mt-3" style = 'width: 100%; height: 50px; font-size: 20px; border-radius: 12px;' onclick="document.getElementById('deleteModal').style.display='none'">ОК</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно успешной update -->
+    <div id="updateModal" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:white; padding:20px; border:1px solid #ccc; z-index:1000;">
+        <div class="modal-dialog">
+            <div class="modal-content" style = "border: 0;">
+                <div class="lead text-body-secondary text-center">{% if lang == 'en' %} Organization updated successfully! {% elseif lang == 'ru' %} Компания успешно изменена! {% endif %}</div>
+                <button class="btn btn-primary mt-3" style = 'width: 100%; height: 50px; font-size: 20px; border-radius: 12px;' onclick="document.getElementById('updateModal').style.display='none'">ОК</button>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('create') === 'success') {
+        document.getElementById('createModal').style.display = 'block';
+    } else if (params.get('delete') === 'success') {
+        document.getElementById('createModal').style.display = 'block';
+    } else if (params.get('update') === 'success') {
+        document.getElementById('updateModal').style.display = 'block';
+    }
+    window.history.replaceState({}, document.title, window.location.pathname);
+</script>
+
 <script>
     function confirmDelete() {
         return confirm("Are you sure?");

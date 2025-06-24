@@ -11,6 +11,8 @@ class IndexController
     {
         $userId = null;
 
+        $lang = trim((string) ($_COOKIE['lang'] ?? 'ru'));
+
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
         }
@@ -28,7 +30,7 @@ class IndexController
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader);
 
-        echo $twig->render('index.html.twig', ['names' => $names, 'user_id' => $userId]);
+        echo $twig->render('index.html.twig', ['names' => $names, 'user_id' => $userId, 'lang' => $lang,  'cache' => false]);
     }
 
     public function showGenerateForm(): void

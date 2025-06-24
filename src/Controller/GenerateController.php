@@ -1,20 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Varvara\Framework\App;
-
-require_once __DIR__ . '/../../vendor/autoload.php';
+namespace Varvara\Framework\Controller;
 
 use Faker\Factory;
-use Exception;
 use PDOException;
 use Varvara\Framework\Database\Database;
 
-class Generate
+class GenerateController
 {
     public function generate(int $quantity): void
     {
+        $lang = trim((string) ($_COOKIE['lang'] ?? 'ru'));
         try {
             $database = new Database();
             $db = $database->getConnection();
@@ -44,10 +40,8 @@ class Generate
 
                 $database->execute($query, $data);
             }
-            $loader = new \Twig\Loader\FilesystemLoader('templates');
-            $twig = new \Twig\Environment($loader);
-            $value = 'Data generated successfully!';
-            echo $twig->render('success.html.twig', ['value' => $value]);
+
+            header('Location: /?generate=success');
 
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();

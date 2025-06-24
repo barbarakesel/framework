@@ -34,7 +34,12 @@ class StatController
 
     public function showStatPage(): void
     {
-        $userId = $_SESSION['user_id'];
+        $userId = null;
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+        };
+
+        $lang = trim((string) ($_COOKIE['lang'] ?? 'ru'));
 
         $database = new Database();
         $db = $database->getConnection();
@@ -48,6 +53,6 @@ class StatController
 
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader);
-        echo $twig->render('statistics.html.twig', ['names' => $names]);
+        echo $twig->render('statistics.html.twig', ['names' => $names, 'lang' => $lang]);
     }
 }

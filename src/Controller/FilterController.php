@@ -1,17 +1,20 @@
 <?php
 
-declare(strict_types=1);
+namespace Varvara\Framework\Controller;
 
-namespace Varvara\Framework\App;
-
-use Exception;
-use PDOException;
 use Varvara\Framework\Database\Database;
 
-class Filter
+class FilterController
 {
     public function filter(): void
     {
+        $lang = trim((string) ($_COOKIE['lang'] ?? 'ru'));
+
+        $userId = null;
+
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+        }
         try {
             $database = new Database();
 
@@ -49,10 +52,10 @@ class Filter
 
             $results = $database->fetchAll($query, $params);
             if ($results) {
-                echo $twig->render('filter.html.twig', ['results' => $results]);
+                echo $twig->render('filter.html.twig', ['results' => $results, 'lang' => $lang]);
             } else {
-                $value = 'There are no results!';
-                echo $twig->render('success.html.twig', ['value' => $value]);
+                if ($lang == 'ru') {$value = 'Результаты не найдены!';} else {$value = 'There are no results!';}
+                echo $twig->render('success.html.twig', ['value' => $value, 'lang' => $lang]);
             }
 
         } catch (PDOException $e) {

@@ -11,16 +11,17 @@ class OrganizationController
 {
     public function show(): void
     {
-        if (!isset($_SESSION['user_id'])) {
-            echo "Please Login";
+        $userId = null;
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
         }
 
-        $userId = $_SESSION['user_id'];
+        $lang = trim((string) ($_COOKIE['lang'] ?? 'ru'));
 
         try {
             $database = new Database();
 
-            $query = "SELECT * FROM organization WHERE owner = :userId";
+            $query = "SELECT id, name FROM organization WHERE owner = :userId";
             $params = [':userId' => $userId];
 
             if (isset($_GET['id'])) {
@@ -38,10 +39,9 @@ class OrganizationController
 
             $results = $database->fetchAll($query, $params);
             if ($results) {
-                echo $twig->render('organization.html.twig', ['results' => $results]);
+                echo $twig->render('organization.html.twig', ['results' => $results, 'lang' => $lang]);
             } else {
-                echo $twig->render('organization.html.twig');
-                //echo $twig->render('noResults.html.twig');
+                echo $twig->render('organization.html.twig', ['lang' => $lang]);
             }
 
         } catch (PDOException $e) {
@@ -52,28 +52,6 @@ class OrganizationController
 
     }
 
-    public function showCreateForm(): void
-    {
-        echo "<div style='background: lightpink; color: white; padding: 20px;  height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; '>
-          <form method='POST' action='/organization/create'>
-                <input name='name' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>
-                <button type='submit' style = 'width: 250px; height: 50px; font-size: 20px; border-radius: 12px; background: white'>Create</button>
-          </form>
-          </div>";
-    }
-    public function showDeleteForm(): void
-    {
-        $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader);
-        echo $twig->render('deleteForm.html.twig');
-    }
-
-    public function showChangeForm(): void
-    {
-        $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader);
-        echo $twig->render('changeFormId.html.twig');
-    }
     public function create(): void
     {
 
@@ -95,11 +73,11 @@ class OrganizationController
             $twig = new \Twig\Environment($loader);
 
             if ($stmt->rowCount() > 0) {
-                $value = 'Company created successfully!';
+                $value = 'success';
             } else {
-                $value = "Company not created!";
+                $value = "fail";
             }
-            echo $twig->render('success.html.twig', ['value' => $value]);
+            header('Location: /organization?create=success');
 
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();
@@ -123,13 +101,7 @@ class OrganizationController
             $loader = new \Twig\Loader\FilesystemLoader('templates');
             $twig = new \Twig\Environment($loader);
 
-            if ($stmt->rowCount() > 0) {
-                $value = 'Company deleted successfully!';
-            } else {
-                $value = "No company found with that ID = $id";
-            }
-
-            echo $twig->render('success.html.twig', ['value' => $value]);
+            header('Location: /organization?delete=success');
 
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();
@@ -187,7 +159,7 @@ class OrganizationController
                 $value = "No company found with that ID = $id";
             }
 
-            echo $twig->render('success.html.twig', ['value' => $value]);
+            header('Location: /organization?update=success');
 
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();

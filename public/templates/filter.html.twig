@@ -9,23 +9,23 @@
 <div class="container">
     <div style="display:flex; justify-content:center; flex-direction:column;">
         <a href="/" style="padding: 20px;">
-            To Main Page
+            {% if lang == 'en' %} To Main Page {% elseif lang == 'ru' %} На главную {% endif %}
         </a>
     </div>
 
     <table style="border: 1px solid black; border-collapse: collapse; width: 100%; background: #ffffff;">
         <thead>
         <tr style="background-color: blue; color: white">
-            <th style="padding: 10px;">ID</th>
-            <th style="padding: 10px;">Country</th>
-            <th style="padding: 10px;">City</th>
-            <th style="padding: 10px;">Is Active</th>
-            <th style="padding: 10px;">Gender</th>
-            <th style="padding: 10px;">Birth Date</th>
-            <th style="padding: 10px;">Salary</th>
-            <th style="padding: 10px;">Has Children</th>
-            <th style="padding: 10px;">Family Status</th>
-            <th style="padding: 10px;">Registration Date</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} ID {% elseif lang == 'ru' %} Идентификатор {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} Country {% elseif lang == 'ru' %} Страна {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} City {% elseif lang == 'ru' %} Город {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} Is Active {% elseif lang == 'ru' %} Активен {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} Gender {% elseif lang == 'ru' %} Пол {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} Birth Date {% elseif lang == 'ru' %} Дата рождения {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} Salary {% elseif lang == 'ru' %} Зарплата {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} Has Children {% elseif lang == 'ru' %} Дети {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} Family Status {% elseif lang == 'ru' %} Статус {% endif %}</th>
+            <th style="padding: 10px;">{% if lang == 'en' %} Registration Date {% elseif lang == 'ru' %} Дата регистрации {% endif %}</th>
         </tr>
         </thead>
         <tbody>

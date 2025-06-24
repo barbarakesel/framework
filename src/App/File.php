@@ -13,8 +13,6 @@ class File
     public function upload(): void
     {
         echo "f";
-        // echo $_FILES["csv"]["name"];
         echo $_FILES['csv']['tmp_name'];
-        ;
     }
 }

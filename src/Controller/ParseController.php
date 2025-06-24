@@ -82,10 +82,8 @@ class ParseController
             }
 
             fclose($handle);
-            $loader = new \Twig\Loader\FilesystemLoader('templates');
-            $twig = new \Twig\Environment($loader);
-            $value = 'Data imported successfully!';
-            echo $twig->render('success.html.twig', ['value' => $value]);
+
+            header('Location: /?import=success');
 
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();

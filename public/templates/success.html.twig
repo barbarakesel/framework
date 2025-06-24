@@ -11,10 +11,10 @@
         <h1>{{ value }}</h1>
     </div>
     <a href="/" style="padding: 20px;">
-        To Main Page
+        {% if lang == 'en' %} To Main Page {% elseif lang == 'ru' %} На главную {% endif %}
     </a>
     <a href="/organization" style="padding: 20px;">
-        To Organizations
+        {% if lang == 'en' %} To Organizations {% elseif lang == 'ru' %} На страницу организаций {% endif %}
     </a>
 </div>
 </body>

@@ -9,20 +9,6 @@ use Varvara\Framework\Database\Database;
 
 class AuthController
 {
-    public function showRegisterForm()
-    {
-        $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader);
-        echo $twig->render('registerForm.html.twig');
-    }
-
-    public function showLoginForm()
-    {
-        $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader);
-        echo $twig->render('loginForm.html.twig');
-    }
-
     public function register()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -38,9 +24,14 @@ class AuthController
             $stmt->execute(['email' => $email]);
             $count = $stmt->fetchColumn();
 
+            header('Content-Type: application/json');
+
             if ($count > 0) {
-                echo 'This user already exists';
-                die;
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'This user already exists'
+                ]);
+                return;
             }
 
             $stmt = $db->prepare('INSERT INTO "user" (email, password) VALUES (:email, :password)');
@@ -49,25 +40,34 @@ class AuthController
                 'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
             ]);
 
-            $loader = new \Twig\Loader\FilesystemLoader('templates');
-            $twig = new \Twig\Environment($loader);
-
-            if ($stmt->rowCount() > 0) {
-                $value = 'Registration was successful!';
-            } else {
-                $value = "Something went wrong!";
-            }
-            echo $twig->render('success.html.twig', ['value' => $value]);
+            echo json_encode([
+                'success' => true,
+                'message' => 'Registration successful'
+            ]);
+            return;
 
         } catch (PDOException $e) {
-            echo "Database error: " . $e->getMessage();
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage()
+            ]);
+            return;
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ]);
+            return;
         }
     }
 
+
     public function login()
     {
+        $lang = trim((string) ($_COOKIE['lang'] ?? 'ru'));
+
         if (session_status() === PHP_SESSION_NONE) {
             session_name("USER_AUTH");
             session_start();
@@ -94,18 +94,9 @@ class AuthController
                     ]);
                 }
                 $_SESSION['user_id'] = $user['id'];
-                echo  $_SESSION['user_id'];
             }
 
-            $loader = new \Twig\Loader\FilesystemLoader('templates');
-            $twig = new \Twig\Environment($loader);
-
-            if ($stmt->rowCount() > 0) {
-                $value = 'Login was successful!';
-            } else {
-                $value = "Something went wrong!";
-            }
-            echo $twig->render('success.html.twig', ['value' => $value]);
+            header('Location: /');
 
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();
