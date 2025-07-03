@@ -32,7 +32,7 @@ $collection->add(new Route('/filter', 'GET', FilterController::class, 'filter'))
 $collection->add(new Route('/generate', 'POST', GenerateController::class, 'generate'));
 $collection->add(new Route('/upload', 'GET', ParseController::class, 'parse'));
 $collection->add(new Route('/stat', 'GET', StatController::class, 'showStatPage'));
-$collection->add(new Route('/count/{organizationId}/{field}','GET',StatController::class,'countByField'));
+$collection->add(new Route('/count/{organizationId}/{field}', 'GET', StatController::class, 'countByField'));
 
 $collection->add(new Route('/organization', 'GET', OrganizationController::class, 'show'));
 $collection->add(new Route('/organization/create-form', 'GET', OrganizationController::class, 'showCreateForm'));
@@ -58,14 +58,14 @@ try {
 
     $controller = new $classname();
 
-    $params = $route->params;
+    $params = $route->getParams();
 
-   if (!empty($params)) {
+    if (!empty($params)) {
         $controller->$method(...array_values($params));
     } else {
         $quantity = $_POST['quantity'] ?? 0;
         $controller->$method((int)$quantity);
-   }
+    }
 
 } catch (Exception $e) {
     http_response_code(404);

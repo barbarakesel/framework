@@ -24,7 +24,8 @@
         "robmorgan/phinx": "^0.16.9"
     },
     "scripts": {
-        "fix": "php-cs-fixer fix src",
+        "fix": "php-cs-fixer fix",
+        "fix-check": "php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.php",
         "analyze": "phpstan analyse -c phpstan.neon"
     }
 }

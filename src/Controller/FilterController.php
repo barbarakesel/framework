@@ -2,6 +2,8 @@
 
 namespace Varvara\Framework\Controller;
 
+use Exception;
+use PDOException;
 use Varvara\Framework\Database\Database;
 
 class FilterController
@@ -54,7 +56,11 @@ class FilterController
             if ($results) {
                 echo $twig->render('filter.html.twig', ['results' => $results, 'lang' => $lang]);
             } else {
-                if ($lang == 'ru') {$value = 'Результаты не найдены!';} else {$value = 'There are no results!';}
+                if ($lang == 'ru') {
+                    $value = 'Результаты не найдены!';
+                } else {
+                    $value = 'There are no results!';
+                }
                 echo $twig->render('success.html.twig', ['value' => $value, 'lang' => $lang]);
             }
 

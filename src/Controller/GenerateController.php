@@ -2,6 +2,7 @@
 
 namespace Varvara\Framework\Controller;
 
+use Exception;
 use Faker\Factory;
 use PDOException;
 use Varvara\Framework\Database\Database;
